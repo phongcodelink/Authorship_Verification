@@ -160,8 +160,7 @@ if __name__ == "__main__":
                                                     mode="max",
                                                     filename="QTag-{epoch:02d}-{val_acc:.2f}")
     TRAINER = pl.Trainer(max_epochs=ARGS.n_epochs, devices=1, accelerator="gpu",
-                         callbacks=[CHECKPOINT_CALLBACK, EARLY_STOPPING_CALLBACK],
-                         progress_bar_refresh_rate=60, logger=LOGGER)
+                         callbacks=[CHECKPOINT_CALLBACK, EARLY_STOPPING_CALLBACK], logger=LOGGER)
     # ------------------------------- Create Model -------------------------------
     MODEL = Classifier(num_classes=len(TARGET_INDEXER.get_vocab2idx()),
                        t5_model_path=ARGS.language_model_path, lr=ARGS.lr,
