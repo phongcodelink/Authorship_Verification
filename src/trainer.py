@@ -77,6 +77,8 @@ if __name__ == "__main__":
         TRAIN_FIRST_TEXT_FEATURES, TRAIN_SECOND_TEXT_FEATURES, DEV_FIRST_TEXT_FEATURES, \
         DEV_SECOND_TEXT_FEATURES, TEST_FIRST_TEXT_FEATURES, \
         TEST_SECOND_TEXT_FEATURES = av_features_obj()
+        if not os.path.exists(ARGS.assets_dir):
+            os.makedirs(ARGS.assets_dir)
         write_pickle(
             [TRAIN_FIRST_TEXT_FEATURES, TRAIN_SECOND_TEXT_FEATURES, DEV_FIRST_TEXT_FEATURES,
              DEV_SECOND_TEXT_FEATURES, TEST_FIRST_TEXT_FEATURES, TEST_SECOND_TEXT_FEATURES],
