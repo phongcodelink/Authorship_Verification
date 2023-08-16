@@ -72,7 +72,7 @@ class Classifier(pl.LightningModule):
                  n_filters: int,
                  filter_sizes: List[int]):
         super().__init__()
-        self.accuracy = torchmetrics.Accuracy(task='binary')
+        self.accuracy = torchmetrics.Accuracy()
         self.f_score_total = torchmetrics.F1(average="weighted", num_classes=num_classes)
         self.learning_rare = lr
         self.max_len = max_len
