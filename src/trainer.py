@@ -154,7 +154,7 @@ if __name__ == "__main__":
     DATA_MODULE.setup()
 
     # -------------------------- Instantiate the Model Trainer -----------------------
-    EARLY_STOPPING_CALLBACK = EarlyStopping(monitor="val_acc", patience=7, mode="max")
+    EARLY_STOPPING_CALLBACK = EarlyStopping(monitor="val_acc", patience=100, mode="max")
     CHECKPOINT_CALLBACK = build_checkpoint_callback(save_top_k=ARGS.save_top_k,
                                                     monitor="val_acc",
                                                     mode="max",

@@ -28,7 +28,7 @@ class BaseConfig:
                                  help="...")
 
         self.parser.add_argument("--n_epochs", type=int,
-                                 default=5,
+                                 default=100,
                                  help="...")
 
         self.parser.add_argument("--batch_size", type=int,
