@@ -185,9 +185,30 @@ class Classifier(pl.LightningModule):
         return loss
 
     def configure_optimizers(self):
-        """
-
-        :return:
-        """
         optimizer = torch.optim.AdamW(self.parameters(), lr=self.learning_rare)
-        return [optimizer]
+
+        # Choose one of the schedulers:
+
+        # 1. StepLR
+        scheduler = {
+            'scheduler': torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1),
+            'interval': 'epoch',  # or 'step' if you want it to update per step
+            'frequency': 1
+        }
+
+        # 2. ExponentialLR
+        # scheduler = {
+        #     'scheduler': torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9),
+        #     'interval': 'epoch',
+        #     'frequency': 1
+        # }
+
+        # 3. ReduceLROnPlateau
+        # scheduler = {
+        #     'scheduler': torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.1, patience=5, verbose=True),
+        #     'monitor': 'val_loss',  # Name of the metric to monitor
+        #     'interval': 'epoch',
+        #     'frequency': 1
+        # }
+
+        return [optimizer], [scheduler]
