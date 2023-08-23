@@ -32,7 +32,7 @@ class BaseConfig:
                                  help="...")
 
         self.parser.add_argument("--batch_size", type=int,
-                                 default=4,
+                                 default=8,
                                  help="...")
         self.parser.add_argument("--max_len", type=int, default=350,
                                  help="Maximum length of inputs")
@@ -75,7 +75,7 @@ class BaseConfig:
                                              2].__str__() + "/assets/saved_models/"),
 
         self.parser.add_argument("--language_model_path", type=str,
-                                 default="google/flan-t5-large",
+                                 default="google/flan-t5-base",
                                  help="Path of the multilingual lm model dir")
 
         self.parser.add_argument("--csv_logger_path", type=str,
