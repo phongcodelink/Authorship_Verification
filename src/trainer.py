@@ -53,8 +53,8 @@ if __name__ == "__main__":
     )
 
     TEST_FIRST_TEXT, TEST_SECOND_TEXT, TEST_TARGETS = prepare_av_data(
-        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
-        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_truth_data)
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
     )
 
     logging.info("train set contain %s sample ...", len(TRAIN_FIRST_TEXT))
