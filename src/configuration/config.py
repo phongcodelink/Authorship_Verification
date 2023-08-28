@@ -32,7 +32,7 @@ class BaseConfig:
                                  help="...")
 
         self.parser.add_argument("--batch_size", type=int,
-                                 default=1,
+                                 default=2,
                                  help="...")
         self.parser.add_argument("--max_len", type=int, default=700,
                                  help="Maximum length of inputs")
@@ -87,6 +87,8 @@ class BaseConfig:
         self.parser.add_argument("--truth_data", type=str, default="train_truth.jsonl")
         self.parser.add_argument("--test_pair_data", type=str, default="test_pairs.jsonl")
         self.parser.add_argument("--test_truth_data", type=str, default="test_truth.jsonl")
+        self.parser.add_argument("--test_pair_data", type=str, default="hidden_test_pairs.jsonl")
+        self.parser.add_argument("--test_truth_data", type=str, default="hidden_test_truth.jsonl")
 
         self.parser.add_argument("--features_file", type=str, default="features.pkl")
 
