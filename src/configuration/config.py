@@ -34,7 +34,7 @@ class BaseConfig:
         self.parser.add_argument("--batch_size", type=int,
                                  default=4,
                                  help="...")
-        self.parser.add_argument("--max_len", type=int, default=350,
+        self.parser.add_argument("--max_len", type=int, default=700,
                                  help="Maximum length of inputs")
 
         self.parser.add_argument("--lr", default=2e-5,
@@ -62,7 +62,7 @@ class BaseConfig:
 
         """
         self.parser.add_argument("--raw_data_dir", type=str,
-                                 default=Path(__file__).parents[2].__str__() + "/data/Raw")
+                                 default=Path(__file__).parents[2].__str__() + "/data/Raw2")
 
         self.parser.add_argument("--processed_data_dir", type=str,
                                  default=Path(__file__).parents[2].__str__() + "/data/Processed")
@@ -82,9 +82,11 @@ class BaseConfig:
                                  default=Path(__file__).parents[2].__str__() + "/assets")
         self.parser.add_argument(
             "--best_model_path", type=str,
-            default="CHECKPOINT PATH")
-        self.parser.add_argument("--pair_data", type=str, default="pairs.jsonl")
-        self.parser.add_argument("--truth_data", type=str, default="truth.jsonl")
+            default="/content/Authorship_Verification/assets/saved_models/Author_Verification/version_0/checkpoints/QTag-epoch=07-val_acc=1.00.ckpt")
+        self.parser.add_argument("--pair_data", type=str, default="train_pairs.jsonl")
+        self.parser.add_argument("--truth_data", type=str, default="train_truth.jsonl")
+        self.parser.add_argument("--test_pair_data", type=str, default="test_pairs.jsonl")
+        self.parser.add_argument("--test_truth_data", type=str, default="test_truth.jsonl")
 
         self.parser.add_argument("--features_file", type=str, default="features.pkl")
 

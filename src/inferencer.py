@@ -30,8 +30,10 @@ if __name__ == "__main__":
 
     # -------------------------------- Load Data----------------------------------
 
-    FIRST_TEXT, SECOND_TEXT, _ = prepare_av_data(
-        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.pair_data))
+    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.truth_data)
+    )
     logging.info("test set contain %s sample ...", len(FIRST_TEXT))
 
     # ------------------------------ Load T5 Tokenizer ---------------------------
@@ -48,6 +50,11 @@ if __name__ == "__main__":
         datasets=[FIRST_TEXT[:10], SECOND_TEXT[:10]],
         tokenizer=word_tokenize,
         pos_tagger=pos_tag)
+
+    print(FIRST_TEXT[:10])
+    print(SECOND_TEXT[:10])
+    print(TARGETS[:10])
+
     FIRST_TEXT_FEATURES, SECOND_TEXT_FEATURES = av_features_obj()
     logging.info("Features are extracted.")
 
@@ -83,6 +90,7 @@ if __name__ == "__main__":
     for i_batch, sample_batched in enumerate(DATALOADER):
         OUTPUT = MODEL(sample_batched)
         OUTPUT = torch.softmax(OUTPUT, dim=1)
-        TARGETS = np.argmax(OUTPUT.detach().numpy(), axis=1)
+        OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
+        TARGETS = np.argmax(OUTPUT_cpu, axis=1)
         PREDICTIONS.extend(TARGETS)
     print(PREDICTIONS)

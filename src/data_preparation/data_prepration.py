@@ -43,7 +43,7 @@ def prepare_av_data(pair_data_path: str,
 def split_data(first_texts: List[str],
                second_texts: List[str],
                targets: List[int],
-               test_size=0.3) -> [List[str], List[str], List[str], List[str], List[str], List[str],
+               test_size=0.1) -> [List[str], List[str], List[str], List[str], List[str], List[str],
                                   List[int], List[int], List[int]]:
     """
     split data in train, dev and test categories
@@ -61,8 +61,11 @@ def split_data(first_texts: List[str],
     test_targets = train_test_split(first_texts, second_texts, targets, test_size=test_size,
                                     random_state=1234)
 
-    dev_first_text, test_first_text, dev_second_text, test_second_text, dev_targets, \
-    test_targets = train_test_split(test_first_text, test_second_text, test_targets, test_size=0.5,
-                                    random_state=1234)
-    return train_first_text, dev_first_text, test_first_text, train_second_text, dev_second_text, \
-           test_second_text, train_targets, dev_targets, test_targets
+    # dev_first_text, test_first_text, dev_second_text, test_second_text, dev_targets, \
+    # test_targets = train_test_split(test_first_text, test_second_text, test_targets, test_size=0.5,
+    #                                 random_state=1234)
+    # return train_first_text, dev_first_text, test_first_text, train_second_text, dev_second_text, \
+    #        test_second_text, train_targets, dev_targets, test_targets
+
+    return train_first_text, test_first_text, train_second_text, \
+           test_second_text, train_targets, test_targets

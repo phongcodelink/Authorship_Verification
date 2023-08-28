@@ -47,12 +47,16 @@ if __name__ == "__main__":
     )
     assert len(FIRST_AUTHORS_TEXTS) == len(SECOND_AUTHORS_TEXTS) == len(TARGETS)
 
-    TRAIN_FIRST_TEXT, DEV_FIRST_TEXT, TEST_FIRST_TEXT, TRAIN_SECOND_TEXT, DEV_SECOND_TEXT, \
-    TEST_SECOND_TEXT, TRAIN_TARGETS, DEV_TARGETS, TEST_TARGETS = split_data(FIRST_AUTHORS_TEXTS,
-                                                                            SECOND_AUTHORS_TEXTS,
-                                                                            TARGETS)
+    TRAIN_FIRST_TEXT, DEV_FIRST_TEXT, TRAIN_SECOND_TEXT, DEV_SECOND_TEXT, \
+    TRAIN_TARGETS, DEV_TARGETS = split_data(FIRST_AUTHORS_TEXTS, SECOND_AUTHORS_TEXTS, TARGETS)
     logging.info("train set contain %s sample ...", len(TRAIN_FIRST_TEXT))
     logging.info("validation set contain %s sample ...", len(DEV_FIRST_TEXT))
+
+    TEST_FIRST_TEXT, TEST_SECOND_TEXT, TEST_TARGETS = prepare_av_data(
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_truth_data)
+    )
+
     logging.info("test set contain %s sample ...", len(TEST_FIRST_TEXT))
 
     # ------------------------------ Load T5 Tokenizer ---------------------------
