@@ -26,14 +26,8 @@ from sklearn.metrics import accuracy_score, f1_score
 logging.basicConfig(level=logging.DEBUG)
 
 
-def infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS):
+def infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL):
     logging.info("test set contain %s sample ...", len(FIRST_TEXT))
-
-    # ------------------------------ Load T5 Tokenizer ---------------------------
-    T5_TOKENIZER = T5Tokenizer.from_pretrained(ARGS.language_model_path)
-
-    # ----------------------------- Load Model -----------------------------------
-    MODEL = Classifier.load_from_checkpoint(ARGS.best_model_path)
 
     # ------------------------------ Extract Features -----------------------------
     # features[0] --> pos
@@ -106,6 +100,12 @@ if __name__ == "__main__":
     CONFIG_CLASS = BaseConfig()
     ARGS = CONFIG_CLASS.get_config()
 
+    # ------------------------------ Load T5 Tokenizer ---------------------------
+    T5_TOKENIZER = T5Tokenizer.from_pretrained(ARGS.language_model_path)
+
+    # ----------------------------- Load Model -----------------------------------
+    MODEL = Classifier.load_from_checkpoint(ARGS.best_model_path)
+
     # -------------------------------- Load TEST Data----------------------------------
     FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     SECOND_TEXT = SECOND_TEXT[:100]
     TARGETS = TARGETS[:100]
 
-    test_accuracy, test_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+    test_accuracy, test_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
     # -------------------------------- Load Hidden 1 Data----------------------------------
     FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     SECOND_TEXT = SECOND_TEXT[:100]
     TARGETS = TARGETS[:100]
 
-    hidden_accuracy, hidden_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+    hidden_accuracy, hidden_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
     # -------------------------------- Load Hidden 3 Data----------------------------------
     FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     SECOND_TEXT = SECOND_TEXT[:100]
     TARGETS = TARGETS[:100]
 
-    hidden_2_accuracy, hidden_2_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+    hidden_2_accuracy, hidden_2_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
     # -------------------------------- Load Real Conversation Data----------------------------------
     # FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
