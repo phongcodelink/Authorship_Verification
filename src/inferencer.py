@@ -21,6 +21,7 @@ from indexer import TokenIndexer
 from data_preparation import prepare_av_data, AVFeatures
 from dataset import ConcatDataset
 from models.t5_model import Classifier
+from sklearn.metrics import accuracy_score, f1_score
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -47,13 +48,13 @@ if __name__ == "__main__":
     # features[1] --> punctuation adn emoji
     # features[2] --> author-specific and topic-specific information
     av_features_obj = AVFeatures(
-        datasets=[FIRST_TEXT[:10], SECOND_TEXT[:10]],
+        datasets=[FIRST_TEXT, SECOND_TEXT],
         tokenizer=word_tokenize,
         pos_tagger=pos_tag)
 
-    print(FIRST_TEXT[:10])
-    print(SECOND_TEXT[:10])
-    print(TARGETS[:10])
+    print(FIRST_TEXT)
+    print(SECOND_TEXT)
+    print(TARGETS)
 
     FIRST_TEXT_FEATURES, SECOND_TEXT_FEATURES = av_features_obj()
     logging.info("Features are extracted.")
@@ -66,8 +67,8 @@ if __name__ == "__main__":
     SECOND_TEXT_FEATURES_POS = POS_INDEXER.convert_samples_to_indexes(SECOND_TEXT_FEATURES[0])
 
     # ---------------------------- Prepare of aggregated data -------------------------------
-    COLUMNS2DATA = {"first_text": FIRST_TEXT[:10],
-                    "second_text": SECOND_TEXT[:10],
+    COLUMNS2DATA = {"first_text": FIRST_TEXT,
+                    "second_text": SECOND_TEXT,
                     "first_punctuations": FIRST_TEXT_FEATURES[1],
                     "second_punctuations": SECOND_TEXT_FEATURES[1],
                     "first_information": FIRST_TEXT_FEATURES[2],
@@ -93,6 +94,14 @@ if __name__ == "__main__":
         OUTPUT = MODEL(sample_batched)
         OUTPUT = torch.softmax(OUTPUT, dim=1)
         OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
-        TARGETS = np.argmax(OUTPUT_cpu, axis=1)
-        PREDICTIONS.extend(TARGETS)
+        NEW_TARGETS = np.argmax(OUTPUT_cpu, axis=1)
+        PREDICTIONS.extend(NEW_TARGETS)
+
+    # Assuming true_labels is a numpy array or list of true labels
+    accuracy = accuracy_score(TARGETS, PREDICTIONS)
+    f1 = f1_score(TARGETS, PREDICTIONS,
+                  average='macro')  # For multi-class classification, use 'macro'. For binary classification, you can use 'binary'.
+
+    print(f"Accuracy: {accuracy * 100:.2f}%")
+    print(f"Macro F1 Score: {f1:.4f}")
     print(PREDICTIONS)
