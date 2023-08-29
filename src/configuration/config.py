@@ -89,6 +89,8 @@ class BaseConfig:
         self.parser.add_argument("--test_truth_data", type=str, default="test_truth.jsonl")
         self.parser.add_argument("--hidden_test_pair_data", type=str, default="hidden_test_pairs.jsonl")
         self.parser.add_argument("--hidden_test_truth_data", type=str, default="hidden_test_truth.jsonl")
+        self.parser.add_argument("--half_hidden_test_pair_data", type=str, default="half_hidden_test_pairs.jsonl")
+        self.parser.add_argument("--half_hidden_test_truth_data", type=str, default="half_hidden_test_truth.jsonl")
 
         self.parser.add_argument("--features_file", type=str, default="features.pkl")
 
