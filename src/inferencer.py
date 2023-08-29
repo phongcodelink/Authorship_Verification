@@ -35,9 +35,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:1000]
-    SECOND_TEXT = SECOND_TEXT[:1000]
-    TARGETS = TARGETS[:1000]
+    FIRST_TEXT = FIRST_TEXT[:100]
+    SECOND_TEXT = SECOND_TEXT[:100]
+    TARGETS = TARGETS[:100]
 
     logging.info("test set contain %s sample ...", len(FIRST_TEXT))
 
