@@ -75,9 +75,9 @@ if __name__ == "__main__":
         logging.info("Features are loaded.")
     else:
         av_features_obj = AVFeatures(
-            datasets=[TRAIN_FIRST_TEXT[:10], TRAIN_SECOND_TEXT[:10], DEV_FIRST_TEXT[:10],
-                      DEV_SECOND_TEXT[:10],
-                      TEST_FIRST_TEXT[:10], TEST_SECOND_TEXT[:10]],
+            datasets=[TRAIN_FIRST_TEXT, TRAIN_SECOND_TEXT, DEV_FIRST_TEXT,
+                      DEV_SECOND_TEXT,
+                      TEST_FIRST_TEXT, TEST_SECOND_TEXT],
             tokenizer=word_tokenize,
             pos_tagger=pos_tag)
         TRAIN_FIRST_TEXT_FEATURES, TRAIN_SECOND_TEXT_FEATURES, DEV_FIRST_TEXT_FEATURES, \
@@ -122,8 +122,8 @@ if __name__ == "__main__":
     TEST_SECOND_TEXT_POS = POS_INDEXER.convert_samples_to_indexes(TEST_SECOND_TEXT_FEATURES[0])
 
     # ---------------------------- Prepare of aggregated data -------------------------------
-    TRAIN_COLUMNS2DATA = {"first_text": TRAIN_FIRST_TEXT[:10],
-                          "second_text": TRAIN_SECOND_TEXT[:10],
+    TRAIN_COLUMNS2DATA = {"first_text": TRAIN_FIRST_TEXT,
+                          "second_text": TRAIN_SECOND_TEXT,
                           "first_punctuations": TRAIN_FIRST_TEXT_FEATURES[1],
                           "second_punctuations": TRAIN_SECOND_TEXT_FEATURES[1],
                           "first_information": TRAIN_FIRST_TEXT_FEATURES[2],
@@ -132,8 +132,8 @@ if __name__ == "__main__":
                           "second_pos": TRAIN_SECOND_TEXT_POS,
                           "targets": TRAIN_INDEXED_TARGET}
 
-    DEV_COLUMNS2DATA = {"first_text": DEV_FIRST_TEXT[:10],
-                        "second_text": DEV_SECOND_TEXT[:10],
+    DEV_COLUMNS2DATA = {"first_text": DEV_FIRST_TEXT[:100],
+                        "second_text": DEV_SECOND_TEXT[:100],
                         "first_punctuations": DEV_FIRST_TEXT_FEATURES[1],
                         "second_punctuations": DEV_SECOND_TEXT_FEATURES[1],
                         "first_information": DEV_FIRST_TEXT_FEATURES[2],
@@ -142,8 +142,8 @@ if __name__ == "__main__":
                         "second_pos": DEV_SECOND_TEXT_POS,
                         "targets": DEV_INDEXED_TARGET}
 
-    TEST_COLUMNS2DATA = {"first_text": TEST_FIRST_TEXT[:10],
-                         "second_text": TEST_SECOND_TEXT[:10],
+    TEST_COLUMNS2DATA = {"first_text": TEST_FIRST_TEXT[:100],
+                         "second_text": TEST_SECOND_TEXT[:100],
                          "first_punctuations": TEST_FIRST_TEXT_FEATURES[1],
                          "second_punctuations": TEST_SECOND_TEXT_FEATURES[1],
                          "first_information": TEST_FIRST_TEXT_FEATURES[2],
