@@ -82,7 +82,7 @@ class BaseConfig:
                                  default=Path(__file__).parents[2].__str__() + "/assets")
         self.parser.add_argument(
             "--best_model_path", type=str,
-            default="/content/drive/Shareddrives/LEAP_hivemind/Fraud_detection/data/one-one_conversations/AV_processed/T5/Authorship_Verification/assets/saved_models/Author_Verification/version_12/checkpoints/QTag-epoch=07-val_acc=1.00.ckpt")
+            default="/content/drive/Shareddrives/LEAP_hivemind/Fraud_detection/data/one-one_conversations/AV_processed/T5/Authorship_Verification/assets/saved_models/Author_Verification/version_13/checkpoints/QTag-epoch=01-val_acc=0.70.ckpt")
         self.parser.add_argument("--pair_data", type=str, default="train_pairs.jsonl")
         self.parser.add_argument("--truth_data", type=str, default="train_truth.jsonl")
         self.parser.add_argument("--real_pair_data", type=str, default="real_pairs.jsonl")
