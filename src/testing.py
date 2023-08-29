@@ -109,5 +109,5 @@ if __name__ == "__main__":
                          callbacks=[CHECKPOINT_CALLBACK, EARLY_STOPPING_CALLBACK], logger=LOGGER)
 
     # ------------------------- Make Prediction -------------------------------------
-    TRAINER.test(ckpt_path="best", datamodule=DATA_MODULE)
+    TRAINER.test(MODEL, datamodule=DATA_MODULE)
     # print(PREDICTIONS)
