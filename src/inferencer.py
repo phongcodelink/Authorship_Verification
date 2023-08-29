@@ -36,6 +36,9 @@ if __name__ == "__main__":
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_truth_data)
     )
     logging.info("test set contain %s sample ...", len(FIRST_TEXT))
+    FIRST_TEXT = FIRST_TEXT[:1000]
+    SECOND_TEXT = SECOND_TEXT[:1000]
+    TARGETS = TARGETS[:1000]
 
     # ------------------------------ Load T5 Tokenizer ---------------------------
     T5_TOKENIZER = T5Tokenizer.from_pretrained(ARGS.language_model_path)
