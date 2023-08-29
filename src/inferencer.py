@@ -86,8 +86,10 @@ if __name__ == "__main__":
     # ------------------------- Make Prediction -------------------------------------
 
     PREDICTIONS = []
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     for i_batch, sample_batched in enumerate(DATALOADER):
+        sample_batched = {k: v.to(device) for k, v in sample_batched.items()}
         OUTPUT = MODEL(sample_batched)
         OUTPUT = torch.softmax(OUTPUT, dim=1)
         OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
