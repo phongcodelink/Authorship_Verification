@@ -32,8 +32,8 @@ if __name__ == "__main__":
     # -------------------------------- Load Data----------------------------------
 
     FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
-        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.pair_data),
-        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.truth_data)
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_truth_data)
     )
     logging.info("test set contain %s sample ...", len(FIRST_TEXT))
 
