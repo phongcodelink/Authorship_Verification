@@ -106,53 +106,56 @@ if __name__ == "__main__":
     # ----------------------------- Load Model -----------------------------------
     MODEL = Classifier.load_from_checkpoint(ARGS.best_model_path)
 
-    # -------------------------------- Load TEST Data----------------------------------
-    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
-        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
-        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_truth_data)
-    )
-    FIRST_TEXT = FIRST_TEXT[:1000]
-    SECOND_TEXT = SECOND_TEXT[:1000]
-    TARGETS = TARGETS[:1000]
-
-    test_accuracy, test_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
-
-    # -------------------------------- Load Hidden 1 Data----------------------------------
-    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
-        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
-        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
-    )
-    FIRST_TEXT = FIRST_TEXT[:1000]
-    SECOND_TEXT = SECOND_TEXT[:1000]
-    TARGETS = TARGETS[:1000]
-
-    hidden_accuracy, hidden_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
-
-    # -------------------------------- Load Hidden 3 Data----------------------------------
-    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
-        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_2_test_pair_data),
-        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_2_test_truth_data)
-    )
-    FIRST_TEXT = FIRST_TEXT[:1000]
-    SECOND_TEXT = SECOND_TEXT[:1000]
-    TARGETS = TARGETS[:1000]
-
-    hidden_2_accuracy, hidden_2_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
-
-    # -------------------------------- Load Real Conversation Data----------------------------------
+    # # -------------------------------- Load TEST Data----------------------------------
+    # FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
+    #     pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
+    #     truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_truth_data)
+    # )
+    # FIRST_TEXT = FIRST_TEXT[:1000]
+    # SECOND_TEXT = SECOND_TEXT[:1000]
+    # TARGETS = TARGETS[:1000]
+    #
+    # test_accuracy, test_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
+    #
+    # # -------------------------------- Load Hidden 1 Data----------------------------------
     # FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
     #     pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
     #     truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
     # )
-    # FIRST_TEXT = FIRST_TEXT[:100]
-    # SECOND_TEXT = SECOND_TEXT[:100]
-    # TARGETS = TARGETS[:100]
+    # FIRST_TEXT = FIRST_TEXT[:1000]
+    # SECOND_TEXT = SECOND_TEXT[:1000]
+    # TARGETS = TARGETS[:1000]
     #
-    # infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+    # hidden_accuracy, hidden_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
+    #
+    # # -------------------------------- Load Hidden 3 Data----------------------------------
+    # FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
+    #     pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_2_test_pair_data),
+    #     truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_2_test_truth_data)
+    # )
+    # FIRST_TEXT = FIRST_TEXT[:1000]
+    # SECOND_TEXT = SECOND_TEXT[:1000]
+    # TARGETS = TARGETS[:1000]
+    #
+    # hidden_2_accuracy, hidden_2_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
-    print("Test Accuracy: {}".format(test_accuracy))
-    print("Test F1: {}".format(test_f1))
-    print("Hidden Accuracy: {}".format(hidden_accuracy))
-    print("Hidden F1: {}".format(hidden_f1))
-    print("Hidden 2 Accuracy: {}".format(hidden_2_accuracy))
-    print("Hidden 2 F1: {}".format(hidden_2_f1))
+    # -------------------------------- Load Real Conversation Data----------------------------------
+    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.real_pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.real_truth_data)
+    )
+    FIRST_TEXT = FIRST_TEXT[:1000]
+    SECOND_TEXT = SECOND_TEXT[:1000]
+    TARGETS = TARGETS[:1000]
+
+    real_accuracy, real_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
+
+    # print("Test Accuracy: {}".format(test_accuracy))
+    # print("Test F1: {}".format(test_f1))
+    # print("Hidden Accuracy: {}".format(hidden_accuracy))
+    # print("Hidden F1: {}".format(hidden_f1))
+    # print("Hidden 2 Accuracy: {}".format(hidden_2_accuracy))
+    # print("Hidden 2 F1: {}".format(hidden_2_f1))
+
+    print("Real Accuracy: {}".format(real_accuracy))
+    print("Real F1: {}".format(real_f1))

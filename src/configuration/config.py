@@ -85,6 +85,8 @@ class BaseConfig:
             default="/content/drive/Shareddrives/LEAP_hivemind/Fraud_detection/data/one-one_conversations/AV_processed/T5/Authorship_Verification/assets/saved_models/Author_Verification/version_12/checkpoints/QTag-epoch=07-val_acc=1.00.ckpt")
         self.parser.add_argument("--pair_data", type=str, default="train_pairs.jsonl")
         self.parser.add_argument("--truth_data", type=str, default="train_truth.jsonl")
+        self.parser.add_argument("--real_pair_data", type=str, default="real_pairs.jsonl")
+        self.parser.add_argument("--real_truth_data", type=str, default="real_truth.jsonl")
         self.parser.add_argument("--test_pair_data", type=str, default="test_pairs.jsonl")
         self.parser.add_argument("--test_truth_data", type=str, default="test_truth.jsonl")
         self.parser.add_argument("--hidden_test_pair_data", type=str, default="hidden_test_pairs.jsonl")
