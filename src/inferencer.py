@@ -25,20 +25,8 @@ from sklearn.metrics import accuracy_score, f1_score
 
 logging.basicConfig(level=logging.DEBUG)
 
-if __name__ == "__main__":
-    CONFIG_CLASS = BaseConfig()
-    ARGS = CONFIG_CLASS.get_config()
 
-    # -------------------------------- Load Data----------------------------------
-
-    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
-        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_pair_data),
-        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_truth_data)
-    )
-    FIRST_TEXT = FIRST_TEXT[:100]
-    SECOND_TEXT = SECOND_TEXT[:100]
-    TARGETS = TARGETS[:100]
-
+def infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS):
     logging.info("test set contain %s sample ...", len(FIRST_TEXT))
 
     # ------------------------------ Load T5 Tokenizer ---------------------------
@@ -111,3 +99,52 @@ if __name__ == "__main__":
     print(f"Accuracy: {accuracy * 100:.2f}%")
     print(f"Macro F1 Score: {f1:.4f}")
     print(PREDICTIONS)
+    return accuracy, f1
+
+if __name__ == "__main__":
+    CONFIG_CLASS = BaseConfig()
+    ARGS = CONFIG_CLASS.get_config()
+
+    # -------------------------------- Load TEST Data----------------------------------
+    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
+    )
+    FIRST_TEXT = FIRST_TEXT[:100]
+    SECOND_TEXT = SECOND_TEXT[:100]
+    TARGETS = TARGETS[:100]
+
+    infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+
+    # -------------------------------- Load Hidden 1 Data----------------------------------
+    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
+    )
+    FIRST_TEXT = FIRST_TEXT[:100]
+    SECOND_TEXT = SECOND_TEXT[:100]
+    TARGETS = TARGETS[:100]
+
+    infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+
+    # -------------------------------- Load Hidden 3 Data----------------------------------
+    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
+    )
+    FIRST_TEXT = FIRST_TEXT[:100]
+    SECOND_TEXT = SECOND_TEXT[:100]
+    TARGETS = TARGETS[:100]
+
+    infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+
+    # -------------------------------- Load Real Conversation Data----------------------------------
+    FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
+        pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
+        truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
+    )
+    FIRST_TEXT = FIRST_TEXT[:100]
+    SECOND_TEXT = SECOND_TEXT[:100]
+    TARGETS = TARGETS[:100]
+
+    infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
