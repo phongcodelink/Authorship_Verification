@@ -62,7 +62,7 @@ class BaseConfig:
 
         """
         self.parser.add_argument("--raw_data_dir", type=str,
-                                 default=Path(__file__).parents[2].__str__() + "/data/AV_processed_v2")
+                                 default=Path(__file__).parents[2].__str__() + "/data/AV_processed_v3")
 
         self.parser.add_argument("--processed_data_dir", type=str,
                                  default=Path(__file__).parents[2].__str__() + "/data/Processed")
