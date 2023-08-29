@@ -96,9 +96,9 @@ def infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS):
     f1 = f1_score(TARGETS, PREDICTIONS,
                   average='macro')  # For multi-class classification, use 'macro'. For binary classification, you can use 'binary'.
 
-    print(f"Accuracy: {accuracy * 100:.2f}%")
-    print(f"Macro F1 Score: {f1:.4f}")
-    print(PREDICTIONS)
+    # print(f"Accuracy: {accuracy * 100:.2f}%")
+    # print(f"Macro F1 Score: {f1:.4f}")
+    # print(PREDICTIONS)
     return accuracy, f1
 
 
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     SECOND_TEXT = SECOND_TEXT[:100]
     TARGETS = TARGETS[:100]
 
-    infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+    test_accuracy, test_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
 
     # -------------------------------- Load Hidden 1 Data----------------------------------
     FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     SECOND_TEXT = SECOND_TEXT[:100]
     TARGETS = TARGETS[:100]
 
-    infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+    hidden_accuracy, hidden_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
 
     # -------------------------------- Load Hidden 3 Data----------------------------------
     FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     SECOND_TEXT = SECOND_TEXT[:100]
     TARGETS = TARGETS[:100]
 
-    infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+    hidden_2_accuracy, hidden_2_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
 
     # -------------------------------- Load Real Conversation Data----------------------------------
     # FIRST_TEXT, SECOND_TEXT, TARGETS = prepare_av_data(
@@ -149,3 +149,10 @@ if __name__ == "__main__":
     # TARGETS = TARGETS[:100]
     #
     # infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS)
+
+    print("Test Accuracy: {}".format(test_accuracy))
+    print("Test F1: {}".format(test_f1))
+    print("Hidden Accuracy: {}".format(hidden_accuracy))
+    print("Hidden F1: {}".format(hidden_f1))
+    print("Hidden 2 Accuracy: {}".format(hidden_2_accuracy))
+    print("Hidden 2 F1: {}".format(hidden_2_f1))
