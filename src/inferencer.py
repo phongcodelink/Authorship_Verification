@@ -57,6 +57,7 @@ if __name__ == "__main__":
         pos_tagger=pos_tag)
 
     print(FIRST_TEXT)
+    print(FIRST_TEXT[0])
     print(SECOND_TEXT)
     print(TARGETS)
 
