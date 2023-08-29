@@ -45,17 +45,26 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.truth_data)
     )
+    TRAIN_FIRST_TEXT = TRAIN_FIRST_TEXT[:50000]
+    TRAIN_SECOND_TEXT = TRAIN_SECOND_TEXT[:50000]
+    TRAIN_TARGETS = TRAIN_TARGETS[:50000]
     assert len(TRAIN_FIRST_TEXT) == len(TRAIN_SECOND_TEXT) == len(TRAIN_TARGETS)
 
     DEV_FIRST_TEXT, DEV_SECOND_TEXT, DEV_TARGETS = prepare_av_data(
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_truth_data)
     )
+    DEV_FIRST_TEXT = DEV_FIRST_TEXT[:100]
+    DEV_SECOND_TEXT = DEV_SECOND_TEXT[:100]
+    DEV_TARGETS = DEV_TARGETS[:100]
 
     TEST_FIRST_TEXT, TEST_SECOND_TEXT, TEST_TARGETS = prepare_av_data(
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
     )
+    TEST_FIRST_TEXT = TEST_FIRST_TEXT[:100]
+    TEST_SECOND_TEXT = TEST_SECOND_TEXT[:100]
+    TEST_TARGETS = TEST_TARGETS[:100]
 
     logging.info("train set contain %s sample ...", len(TRAIN_FIRST_TEXT))
     logging.info("validation set contain %s sample ...", len(DEV_FIRST_TEXT))
