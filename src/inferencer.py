@@ -111,9 +111,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:100]
-    SECOND_TEXT = SECOND_TEXT[:100]
-    TARGETS = TARGETS[:100]
+    FIRST_TEXT = FIRST_TEXT[:1000]
+    SECOND_TEXT = SECOND_TEXT[:1000]
+    TARGETS = TARGETS[:1000]
 
     test_accuracy, test_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
@@ -122,9 +122,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:100]
-    SECOND_TEXT = SECOND_TEXT[:100]
-    TARGETS = TARGETS[:100]
+    FIRST_TEXT = FIRST_TEXT[:1000]
+    SECOND_TEXT = SECOND_TEXT[:1000]
+    TARGETS = TARGETS[:1000]
 
     hidden_accuracy, hidden_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
@@ -133,9 +133,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_2_test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_2_test_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:100]
-    SECOND_TEXT = SECOND_TEXT[:100]
-    TARGETS = TARGETS[:100]
+    FIRST_TEXT = FIRST_TEXT[:1000]
+    SECOND_TEXT = SECOND_TEXT[:1000]
+    TARGETS = TARGETS[:1000]
 
     hidden_2_accuracy, hidden_2_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
