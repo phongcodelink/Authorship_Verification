@@ -94,6 +94,7 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     for i_batch, sample_batched in enumerate(DATALOADER):
+        print("Batch: {}".format(i_batch))
         sample_batched = {k: v.to(device) for k, v in sample_batched.items()}
         OUTPUT = MODEL(sample_batched)
         OUTPUT = torch.softmax(OUTPUT, dim=1)
