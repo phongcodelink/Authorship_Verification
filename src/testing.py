@@ -10,8 +10,8 @@
 # ============================ Third Party libs ============================
 import logging
 import os
-import numpy as np
-import torch
+# import numpy as np
+# import torch
 from transformers import T5Tokenizer
 from nltk.tokenize import word_tokenize
 from nltk import pos_tag
@@ -25,8 +25,8 @@ from indexer import TokenIndexer
 from data_preparation import prepare_av_data, AVFeatures
 from models.t5_model import Classifier
 from models import build_checkpoint_callback
-from src.dataset import DataModule
-from src.indexer import Indexer
+from dataset import DataModule
+from indexer import Indexer
 
 logging.basicConfig(level=logging.DEBUG)
 
