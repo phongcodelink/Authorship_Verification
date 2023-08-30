@@ -191,8 +191,8 @@ class Classifier(pl.LightningModule):
 
         # 1. StepLR
         scheduler = {
-            'scheduler': torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1),
-            'interval': 'epoch',  # or 'step' if you want it to update per step
+            'scheduler': torch.optim.lr_scheduler.StepLR(optimizer, step_size=2000, gamma=0.1),
+            'interval': 'step',  # or 'step' if you want it to update per step
             'frequency': 1
         }
 
