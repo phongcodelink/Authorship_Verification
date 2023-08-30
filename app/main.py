@@ -102,6 +102,7 @@ async def infer(request: InferRequest):
         OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
         NEW_TARGETS = np.argmax(OUTPUT_cpu, axis=1).tolist()
         PREDICTIONS.extend(NEW_TARGETS)
+        print("Prediction: {}".format(NEW_TARGETS))
 
     return {"label": PREDICTIONS}
 
