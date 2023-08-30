@@ -99,7 +99,7 @@ def infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL):
 if __name__ == "__main__":
     CONFIG_CLASS = BaseConfig()
     ARGS = CONFIG_CLASS.get_config()
-    test_samples = 200
+    test_samples = 100
 
 
     # ------------------------------ Load T5 Tokenizer ---------------------------
@@ -113,9 +113,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:200]
-    SECOND_TEXT = SECOND_TEXT[:200]
-    TARGETS = TARGETS[:200]
+    FIRST_TEXT = FIRST_TEXT[:test_samples]
+    SECOND_TEXT = SECOND_TEXT[:test_samples]
+    TARGETS = TARGETS[:test_samples]
 
     test_accuracy, test_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
@@ -124,9 +124,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:200]
-    SECOND_TEXT = SECOND_TEXT[:200]
-    TARGETS = TARGETS[:200]
+    FIRST_TEXT = FIRST_TEXT[:test_samples]
+    SECOND_TEXT = SECOND_TEXT[:test_samples]
+    TARGETS = TARGETS[:test_samples]
 
     hidden_accuracy, hidden_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
@@ -135,9 +135,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_2_test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_2_test_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:200]
-    SECOND_TEXT = SECOND_TEXT[:200]
-    TARGETS = TARGETS[:200]
+    FIRST_TEXT = FIRST_TEXT[:test_samples]
+    SECOND_TEXT = SECOND_TEXT[:test_samples]
+    TARGETS = TARGETS[:test_samples]
 
     hidden_2_accuracy, hidden_2_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
@@ -146,9 +146,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.half_hidden_test_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:200]
-    SECOND_TEXT = SECOND_TEXT[:200]
-    TARGETS = TARGETS[:200]
+    FIRST_TEXT = FIRST_TEXT[:test_samples]
+    SECOND_TEXT = SECOND_TEXT[:test_samples]
+    TARGETS = TARGETS[:test_samples]
 
     half_hidden_2_accuracy, half_hidden_2_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
@@ -157,9 +157,9 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.real_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.real_truth_data)
     )
-    FIRST_TEXT = FIRST_TEXT[:200]
-    SECOND_TEXT = SECOND_TEXT[:200]
-    TARGETS = TARGETS[:200]
+    FIRST_TEXT = FIRST_TEXT[:test_samples]
+    SECOND_TEXT = SECOND_TEXT[:test_samples]
+    TARGETS = TARGETS[:test_samples]
 
     real_accuracy, real_f1 = infer_metrics(FIRST_TEXT, SECOND_TEXT, TARGETS, T5_TOKENIZER, MODEL)
 
