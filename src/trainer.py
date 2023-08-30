@@ -38,7 +38,7 @@ if __name__ == "__main__":
     # -------------------------------- Create Config Instance---------------------
     CONFIG_CLASS = BaseConfig()
     ARGS = CONFIG_CLASS.get_config()
-    n_train = 30
+    n_train = 20000
     n_test = 10
 
     # ------------------------------ Create CSVLogger Instance -------------------
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     DATA_MODULE.setup()
 
     # -------------------------- Instantiate the Model Trainer -----------------------
-    EARLY_STOPPING_CALLBACK = EarlyStopping(monitor="val_acc", patience=6, mode="max")
+    EARLY_STOPPING_CALLBACK = EarlyStopping(monitor="val_acc", patience=100, mode="max")
     CHECKPOINT_CALLBACK = build_checkpoint_callback(save_top_k=ARGS.save_top_k,
                                                     monitor="val_acc",
                                                     mode="max",
