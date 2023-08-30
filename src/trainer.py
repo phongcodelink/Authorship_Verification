@@ -11,6 +11,7 @@
 import itertools
 import logging
 import os
+import transformers
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.loggers import CSVLogger
@@ -28,6 +29,7 @@ from models import build_checkpoint_callback
 from models.t5_model import Classifier
 
 # ==========================================================================
+transformers.logging.set_verbosity_error()
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -36,6 +38,8 @@ if __name__ == "__main__":
     # -------------------------------- Create Config Instance---------------------
     CONFIG_CLASS = BaseConfig()
     ARGS = CONFIG_CLASS.get_config()
+    n_train = 30
+    n_test = 10
 
     # ------------------------------ Create CSVLogger Instance -------------------
     LOGGER = CSVLogger(save_dir=ARGS.saved_model_path, name=ARGS.model_name)
@@ -45,26 +49,26 @@ if __name__ == "__main__":
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.truth_data)
     )
-    TRAIN_FIRST_TEXT = TRAIN_FIRST_TEXT[:50000]
-    TRAIN_SECOND_TEXT = TRAIN_SECOND_TEXT[:50000]
-    TRAIN_TARGETS = TRAIN_TARGETS[:50000]
+    TRAIN_FIRST_TEXT = TRAIN_FIRST_TEXT[:n_train]
+    TRAIN_SECOND_TEXT = TRAIN_SECOND_TEXT[:n_train]
+    TRAIN_TARGETS = TRAIN_TARGETS[:n_train]
     assert len(TRAIN_FIRST_TEXT) == len(TRAIN_SECOND_TEXT) == len(TRAIN_TARGETS)
 
     DEV_FIRST_TEXT, DEV_SECOND_TEXT, DEV_TARGETS = prepare_av_data(
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.test_truth_data)
     )
-    DEV_FIRST_TEXT = DEV_FIRST_TEXT[:100]
-    DEV_SECOND_TEXT = DEV_SECOND_TEXT[:100]
-    DEV_TARGETS = DEV_TARGETS[:100]
+    DEV_FIRST_TEXT = DEV_FIRST_TEXT[:n_test]
+    DEV_SECOND_TEXT = DEV_SECOND_TEXT[:n_test]
+    DEV_TARGETS = DEV_TARGETS[:n_test]
 
     TEST_FIRST_TEXT, TEST_SECOND_TEXT, TEST_TARGETS = prepare_av_data(
         pair_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_pair_data),
         truth_data_path=os.path.join(ARGS.raw_data_dir, ARGS.hidden_test_truth_data)
     )
-    TEST_FIRST_TEXT = TEST_FIRST_TEXT[:100]
-    TEST_SECOND_TEXT = TEST_SECOND_TEXT[:100]
-    TEST_TARGETS = TEST_TARGETS[:100]
+    TEST_FIRST_TEXT = TEST_FIRST_TEXT[:n_test]
+    TEST_SECOND_TEXT = TEST_SECOND_TEXT[:n_test]
+    TEST_TARGETS = TEST_TARGETS[:n_test]
 
     logging.info("train set contain %s sample ...", len(TRAIN_FIRST_TEXT))
     logging.info("validation set contain %s sample ...", len(DEV_FIRST_TEXT))
@@ -176,6 +180,7 @@ if __name__ == "__main__":
                                                     filename="QTag-{epoch:02d}-{val_acc:.2f}")
     TRAINER = pl.Trainer(max_epochs=ARGS.n_epochs, devices=1, accelerator="gpu",
                          callbacks=[CHECKPOINT_CALLBACK, EARLY_STOPPING_CALLBACK], logger=LOGGER)
+    # precision="16-mixed",
     # ------------------------------- Create Model -------------------------------
     MODEL = Classifier(num_classes=len(TARGET_INDEXER.get_vocab2idx()),
                        t5_model_path=ARGS.language_model_path, lr=ARGS.lr,
