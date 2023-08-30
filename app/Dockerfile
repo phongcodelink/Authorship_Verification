@@ -22,4 +22,4 @@ COPY . app
 EXPOSE 80
 
 # Run app.py when the container launches
-CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:80", "--timeout", "600"]
+CMD ["gunicorn", "-w", "1", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:80", "--timeout", "600"]
