@@ -1,5 +1,5 @@
 # Use the python:3.10 as the base image
-FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
+FROM nvcr.io/nvidia/pytorch:23.08-py3
 
 # Set environment variables
 ENV PATH "/opt/venv/bin:$PATH"
