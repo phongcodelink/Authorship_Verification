@@ -57,64 +57,71 @@ class InferRequest(BaseModel):
 
 @app.post("/inference", tags=["Inference"])
 async def infer(request: InferRequest):
-    text1 = request.text1
-    text2 = request.text2
-    FIRST_TEXT = [text1]
-    SECOND_TEXT = [text2]
+    try:
+        text1 = request.text1
+        text2 = request.text2
+        FIRST_TEXT = [text1]
+        SECOND_TEXT = [text2]
 
-    av_features_obj = AVFeatures(
-        datasets=[FIRST_TEXT, SECOND_TEXT],
-        tokenizer=word_tokenize,
-        pos_tagger=pos_tag)
+        av_features_obj = AVFeatures(
+            datasets=[FIRST_TEXT, SECOND_TEXT],
+            tokenizer=word_tokenize,
+            pos_tagger=pos_tag)
 
-    FIRST_TEXT_FEATURES, SECOND_TEXT_FEATURES = av_features_obj()
-    POS_INDEXER = TokenIndexer()
-    POS_INDEXER.load(vocab2idx_path=os.path.join(ARGS.assets_dir, ARGS.pos2index_file),
-                     idx2vocab_path=os.path.join(ARGS.assets_dir, ARGS.index2pos_file))
+        FIRST_TEXT_FEATURES, SECOND_TEXT_FEATURES = av_features_obj()
+        POS_INDEXER = TokenIndexer()
+        POS_INDEXER.load(vocab2idx_path=os.path.join(ARGS.assets_dir, ARGS.pos2index_file),
+                         idx2vocab_path=os.path.join(ARGS.assets_dir, ARGS.index2pos_file))
 
-    FIRST_TEXT_FEATURES_POS = POS_INDEXER.convert_samples_to_indexes(FIRST_TEXT_FEATURES[0])
-    SECOND_TEXT_FEATURES_POS = POS_INDEXER.convert_samples_to_indexes(SECOND_TEXT_FEATURES[0])
+        FIRST_TEXT_FEATURES_POS = POS_INDEXER.convert_samples_to_indexes(FIRST_TEXT_FEATURES[0])
+        SECOND_TEXT_FEATURES_POS = POS_INDEXER.convert_samples_to_indexes(SECOND_TEXT_FEATURES[0])
 
-    # ---------------------------- Prepare of aggregated data -------------------------------
-    COLUMNS2DATA = {"first_text": FIRST_TEXT,
-                    "second_text": SECOND_TEXT,
-                    "first_punctuations": FIRST_TEXT_FEATURES[1],
-                    "second_punctuations": SECOND_TEXT_FEATURES[1],
-                    "first_information": FIRST_TEXT_FEATURES[2],
-                    "second_information": SECOND_TEXT_FEATURES[2],
-                    "first_pos": FIRST_TEXT_FEATURES_POS,
-                    "second_pos": SECOND_TEXT_FEATURES_POS}
+        # ---------------------------- Prepare of aggregated data -------------------------------
+        COLUMNS2DATA = {"first_text": FIRST_TEXT,
+                        "second_text": SECOND_TEXT,
+                        "first_punctuations": FIRST_TEXT_FEATURES[1],
+                        "second_punctuations": SECOND_TEXT_FEATURES[1],
+                        "first_information": FIRST_TEXT_FEATURES[2],
+                        "second_information": SECOND_TEXT_FEATURES[2],
+                        "first_pos": FIRST_TEXT_FEATURES_POS,
+                        "second_pos": SECOND_TEXT_FEATURES_POS}
 
-    # ------------------------- Create dataloader -----------------------------------
-    DATASET = ConcatDataset(data=COLUMNS2DATA,
-                            tokenizer=T5_TOKENIZER,
-                            max_len=ARGS.max_len)
+        # ------------------------- Create dataloader -----------------------------------
+        DATASET = ConcatDataset(data=COLUMNS2DATA,
+                                tokenizer=T5_TOKENIZER,
+                                max_len=ARGS.max_len)
 
-    DATALOADER = torch.utils.data.DataLoader(DATASET, batch_size=1, shuffle=False, num_workers=1)
-    PREDICTIONS = []
-    PROBABILITIES = []
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        DATALOADER = torch.utils.data.DataLoader(DATASET, batch_size=1, shuffle=False, num_workers=1)
+        PREDICTIONS = []
+        PROBABILITIES = []
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    for i_batch, sample_batched in enumerate(DATALOADER):
-        print("Batch: {}".format(i_batch))
+        for i_batch, sample_batched in enumerate(DATALOADER):
+            print("Batch: {}".format(i_batch))
 
-        sample_batched = {k: v.to(device) for k, v in sample_batched.items()}
+            sample_batched = {k: v.to(device) for k, v in sample_batched.items()}
 
-        OUTPUT = MODEL(sample_batched)
-        OUTPUT = torch.softmax(OUTPUT, dim=1)
-        OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
+            OUTPUT = MODEL(sample_batched)
+            OUTPUT = torch.softmax(OUTPUT, dim=1)
+            OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
 
-        # Get the predicted class labels
-        NEW_TARGETS = np.argmax(OUTPUT_cpu, axis=1).tolist()
-        PREDICTIONS.extend(NEW_TARGETS)
+            # Get the predicted class labels
+            NEW_TARGETS = np.argmax(OUTPUT_cpu, axis=1).tolist()
+            PREDICTIONS.extend(NEW_TARGETS)
 
-        # Get the predicted probabilities
-        NEW_PROBABILITIES = np.max(OUTPUT_cpu, axis=1).tolist()
-        PROBABILITIES.extend(NEW_PROBABILITIES)
+            # Get the predicted probabilities
+            NEW_PROBABILITIES = np.max(OUTPUT_cpu, axis=1).tolist()
+            PROBABILITIES.extend(NEW_PROBABILITIES)
 
-        print("Prediction: {}".format(NEW_TARGETS))
-        print("Probability: {}".format(NEW_PROBABILITIES))
+            print("Prediction: {}".format(NEW_TARGETS))
+            print("Probability: {}".format(NEW_PROBABILITIES))
 
-    return {"label": PREDICTIONS[0], "probability": PROBABILITIES[0]}
+        return {"label": PREDICTIONS[0], "probability": PROBABILITIES[0]}
+
+    except RuntimeError as error:
+        # Check for CUDA out of memory error
+        torch.cuda.empty_cache()
+        logger.error(error)
+        return {"error": str(error)}
 
 
