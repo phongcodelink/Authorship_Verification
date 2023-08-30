@@ -40,9 +40,6 @@ logger.debug(ARGS.best_model_path)
 # ------------------------------ Load T5 Tokenizer ---------------------------
 T5_TOKENIZER = T5Tokenizer.from_pretrained(ARGS.language_model_path)
 
-# ----------------------------- Load Model -----------------------------------
-MODEL = Classifier.load_from_checkpoint(ARGS.best_model_path)
-
 
 # live api check if server is alive
 @app.get("/live", tags=["live"])
@@ -57,6 +54,9 @@ class InferRequest(BaseModel):
 
 @app.post("/inference", tags=["Inference"])
 async def infer(request: InferRequest):
+    # ----------------------------- Load Model -----------------------------------
+    MODEL = Classifier.load_from_checkpoint(ARGS.best_model_path)
+
     text1 = request.text1
     text2 = request.text2
     FIRST_TEXT = [text1]
