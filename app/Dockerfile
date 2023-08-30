@@ -1,17 +1,15 @@
-# Use the python:3.10 as the base image
+# Use the nvidia pytorch image as the base
 FROM nvcr.io/nvidia/pytorch:23.08-py3
 
 # Set environment variables
-ENV PATH "/opt/venv/bin:$PATH"
 ENV PYTHONDONTWRITEBYTECODE True
 ENV PYTHONPATH app
 ENV PYTHONUNBUFFERED True
 
-# Create a virtual environment and install dependencies
-RUN python -m venv /opt/venv
+# Install dependencies directly without using virtual environment
 COPY requirements.txt requirements.txt
-RUN pip install --upgrade pip --requirement requirements.txt
-RUN python -m nltk.downloader averaged_perceptron_tagger -d /opt/venv/nltk_data
+RUN pip install --upgrade pip && pip install --requirement requirements.txt
+RUN python -m nltk.downloader averaged_perceptron_tagger
 
 # Set the working directory to /app
 WORKDIR /app
