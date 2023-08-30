@@ -3,7 +3,7 @@
 
 """
     Author Verification Project:
-        src:
+        app:
             trainer.py
 """
 
