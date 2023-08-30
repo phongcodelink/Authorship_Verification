@@ -75,7 +75,7 @@ class BaseConfig:
                                              2].__str__() + "/assets/saved_models/"),
 
         self.parser.add_argument("--language_model_path", type=str,
-                                 default="google/flan-t5-base",
+                                 default="google/flan-t5-large",
                                  help="Path of the multilingual lm model dir")
 
         self.parser.add_argument("--csv_logger_path", type=str,
