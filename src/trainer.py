@@ -178,7 +178,7 @@ if __name__ == "__main__":
                                                     monitor="val_acc",
                                                     mode="max",
                                                     filename="QTag-{epoch:02d}-{val_acc:.2f}")
-    TRAINER = pl.Trainer(precision="16-mixed", max_epochs=ARGS.n_epochs, devices=1, accelerator="gpu",
+    TRAINER = pl.Trainer(max_epochs=ARGS.n_epochs, devices=1, accelerator="gpu",
                          callbacks=[CHECKPOINT_CALLBACK, EARLY_STOPPING_CALLBACK], logger=LOGGER)
     # precision="16-mixed",
     # ------------------------------- Create Model -------------------------------
