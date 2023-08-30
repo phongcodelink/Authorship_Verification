@@ -100,7 +100,7 @@ async def infer(request: InferRequest):
         OUTPUT = MODEL(sample_batched)
         OUTPUT = torch.softmax(OUTPUT, dim=1)
         OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
-        NEW_TARGETS = np.argmax(OUTPUT_cpu, axis=1)
+        NEW_TARGETS = np.argmax(OUTPUT_cpu, axis=1).tolist()
         PREDICTIONS.extend(NEW_TARGETS)
 
     return {"label": PREDICTIONS}
