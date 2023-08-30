@@ -9,6 +9,7 @@ ENV PYTHONUNBUFFERED True
 # Install dependencies directly without using virtual environment
 COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip && pip install --requirement requirements.txt
+RUN python -m nltk.downloader punkt
 RUN python -m nltk.downloader averaged_perceptron_tagger
 
 # Set the working directory to /app
