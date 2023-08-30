@@ -92,17 +92,29 @@ async def infer(request: InferRequest):
 
     DATALOADER = torch.utils.data.DataLoader(DATASET, batch_size=1, shuffle=False, num_workers=1)
     PREDICTIONS = []
+    PROBABILITIES = []
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     for i_batch, sample_batched in enumerate(DATALOADER):
         print("Batch: {}".format(i_batch))
+
         sample_batched = {k: v.to(device) for k, v in sample_batched.items()}
+
         OUTPUT = MODEL(sample_batched)
         OUTPUT = torch.softmax(OUTPUT, dim=1)
         OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
+
+        # Get the predicted class labels
         NEW_TARGETS = np.argmax(OUTPUT_cpu, axis=1).tolist()
         PREDICTIONS.extend(NEW_TARGETS)
-        print("Prediction: {}".format(NEW_TARGETS))
 
-    return {"label": PREDICTIONS}
+        # Get the predicted probabilities
+        NEW_PROBABILITIES = np.max(OUTPUT_cpu, axis=1).tolist()
+        PROBABILITIES.extend(NEW_PROBABILITIES)
+
+        print("Prediction: {}".format(NEW_TARGETS))
+        print("Probability: {}".format(NEW_PROBABILITIES))
+
+    return {"label": PREDICTIONS[0], "probability": PROBABILITIES[0]}
+
 
