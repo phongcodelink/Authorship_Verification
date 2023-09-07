@@ -115,7 +115,8 @@ async def infer(request: InferRequest):
             PREDICTIONS.append(OUTPUT_probs)
             predictions = np.concatenate(PREDICTIONS)
 
-            binary_predictions = (predictions >= threshold).astype(int)
+            binary_predictions = (predictions >= threshold).astype(int).tolist()
+            predictions = predictions.tolist()
 
             return {"label": binary_predictions[0], "probability": 1 - predictions[0]}
 
