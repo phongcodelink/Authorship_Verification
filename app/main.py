@@ -12,7 +12,7 @@ from data_preparation import AVFeatures
 from dataset import ConcatDataset
 from models.t5_model import Classifier
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator, ValidationError
 from fastapi import FastAPI, BackgroundTasks, Response, Depends
 from logger import get_logger
 
@@ -53,6 +53,13 @@ async def aa_live():
 class InferRequest(BaseModel):
     text1: str
     text2: str
+    negative_threshold: float = None
+
+    @validator('negative_threshold', pre=True, always=True)
+    def check_threshold(cls, value):
+        if value is not None and (value <= 0 or value >= 1):
+            raise ValidationError('negative_threshold should be between 0 and 1 (exclusive)')
+        return value
 
 
 @app.post("/inference", tags=["Inference"])
@@ -60,6 +67,7 @@ async def infer(request: InferRequest):
     try:
         text1 = request.text1
         text2 = request.text2
+        threshold = 1 - request.negative_threshold if request.negative_threshold else 0.1
         FIRST_TEXT = [text1]
         SECOND_TEXT = [text2]
 
@@ -103,20 +111,13 @@ async def infer(request: InferRequest):
 
             OUTPUT = MODEL(sample_batched)
             OUTPUT = torch.softmax(OUTPUT, dim=1)
-            OUTPUT_cpu = OUTPUT.detach().cpu().numpy()  # move tensor to CPU and then convert to numpy
+            OUTPUT_probs = OUTPUT[:, 1].detach().cpu().numpy()  # Getting the probability of the positive class
+            PREDICTIONS.append(OUTPUT_probs)
+            predictions = np.concatenate(PREDICTIONS)
 
-            # Get the predicted class labels
-            NEW_TARGETS = np.argmax(OUTPUT_cpu, axis=1).tolist()
-            PREDICTIONS.extend(NEW_TARGETS)
+            binary_predictions = (predictions >= threshold).astype(int)
 
-            # Get the predicted probabilities
-            NEW_PROBABILITIES = np.max(OUTPUT_cpu, axis=1).tolist()
-            PROBABILITIES.extend(NEW_PROBABILITIES)
-
-            print("Prediction: {}".format(NEW_TARGETS))
-            print("Probability: {}".format(NEW_PROBABILITIES))
-
-        return {"label": PREDICTIONS[0], "probability": PROBABILITIES[0]}
+            return {"label": binary_predictions[0], "probability": 1 - predictions[0]}
 
     except RuntimeError as error:
         # Check for CUDA out of memory error
